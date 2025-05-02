@@ -3,27 +3,44 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>LTCCH Cases 2025</title>
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; }
     h1 { text-align: center; }
-    input[type="text"] {
-      width: 100%;
-      padding: 10px;
-      margin-top: 20px;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+    input[type="text"], select {
+      width: 100%; padding: 8px; margin-top: 4px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;
     }
-    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
     th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
     th { background-color: #f2f2f2; cursor: pointer; }
     tr:nth-child(even) { background-color: #f9f9f9; }
+    button { padding: 6px 10px; margin-top: 10px; }
+    .form-group { margin-bottom: 10px; }
+    .delete-btn { color: red; cursor: pointer; }
   </style>
 </head>
 <body>
+
   <h1>LTCCH Cases 2025</h1>
+
+  <h3>Add New Case</h3>
+  <form id="caseForm">
+    <div class="form-group"><input type="text" placeholder="Received Date" id="receivedDate" required /></div>
+    <div class="form-group"><input type="text" placeholder="Document Code" id="docCode" required /></div>
+    <div class="form-group"><input type="text" placeholder="LTCCH Ticket Number" id="ticketNum" required /></div>
+    <div class="form-group"><input type="text" placeholder="Subject" id="subject" required /></div>
+    <div class="form-group"><input type="text" placeholder="Category" id="category" required /></div>
+    <div class="form-group"><input type="text" placeholder="Perpetrator" id="perpetrator" required /></div>
+    <div class="form-group"><input type="text" placeholder="Schools Division Office" id="sdo" required /></div>
+    <div class="form-group"><input type="text" placeholder="School Name" id="school" required /></div>
+    <div class="form-group"><input type="text" placeholder="Type of Issuance" id="issuance" required /></div>
+    <div class="form-group"><input type="text" placeholder="Date of Compliance" id="compliance" /></div>
+    <div class="form-group"><input type="text" placeholder="Endorsed to LRED" id="lred" /></div>
+    <div class="form-group"><input type="text" placeholder="Remarks" id="remarks" /></div>
+    <button type="submit">Add Case</button>
+  </form>
+
   <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search in table..." />
   <table id="casesTable">
     <thead>
@@ -40,6 +57,7 @@
         <th onclick="sortTable(9)">Date of Compliance</th>
         <th onclick="sortTable(10)">Endorsed to LRED</th>
         <th onclick="sortTable(11)">Remarks</th>
+        <th>Delete</th>
       </tr>
     </thead>
     <tbody>
@@ -56,54 +74,63 @@
         <td>-</td>
         <td>YES, JANUARY 13, 2025</td>
         <td>Request for Follow Up</td>
+        <td><span class="delete-btn" onclick="deleteRow(this)">Delete</span></td>
       </tr>
     </tbody>
   </table>
 
   <script>
-    function searchTable() {
-      const input = document.getElementById("searchInput");
-      const filter = input.value.toLowerCase();
-      const table = document.getElementById("casesTable");
-      const tr = table.getElementsByTagName("tr");
+    document.getElementById("caseForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const table = document.getElementById("casesTable").getElementsByTagName("tbody")[0];
+      const row = table.insertRow();
+      const fields = ["receivedDate", "docCode", "ticketNum", "subject", "category", "perpetrator", "sdo", "school", "issuance", "compliance", "lred", "remarks"];
+      fields.forEach(id => {
+        const cell = row.insertCell();
+        cell.textContent = document.getElementById(id).value;
+        document.getElementById(id).value = "";
+      });
+      const deleteCell = row.insertCell();
+      deleteCell.innerHTML = '<span class="delete-btn" onclick="deleteRow(this)">Delete</span>';
+    });
 
-      for (let i = 1; i < tr.length; i++) {
-        tr[i].style.display = "none";
-        const td = tr[i].getElementsByTagName("td");
-        for (let j = 0; j < td.length; j++) {
-          if (td[j]) {
-            const textValue = td[j].textContent || td[j].innerText;
-            if (textValue.toLowerCase().indexOf(filter) > -1) {
-              tr[i].style.display = "";
-              break;
-            }
+    function deleteRow(btn) {
+      const row = btn.closest("tr");
+      row.remove();
+    }
+
+    function searchTable() {
+      const input = document.getElementById("searchInput").value.toLowerCase();
+      const rows = document.getElementById("casesTable").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+      for (let i = 0; i < rows.length; i++) {
+        const cells = rows[i].getElementsByTagName("td");
+        let match = false;
+        for (let j = 0; j < cells.length - 1; j++) {
+          if (cells[j].textContent.toLowerCase().includes(input)) {
+            match = true;
+            break;
           }
         }
+        rows[i].style.display = match ? "" : "none";
       }
     }
 
     function sortTable(n) {
       const table = document.getElementById("casesTable");
-      let rows, switching, i, x, y, shouldSwitch, dir, switchCount = 0;
-      switching = true;
-      dir = "asc";
+      let switching = true;
+      let dir = "asc";
+      let switchCount = 0;
       while (switching) {
         switching = false;
-        rows = table.rows;
-        for (i = 1; i < (rows.length - 1); i++) {
-          shouldSwitch = false;
-          x = rows[i].getElementsByTagName("TD")[n];
-          y = rows[i + 1].getElementsByTagName("TD")[n];
-          if (dir === "asc") {
-            if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-              shouldSwitch = true;
-              break;
-            }
-          } else if (dir === "desc") {
-            if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-              shouldSwitch = true;
-              break;
-            }
+        const rows = table.rows;
+        for (let i = 1; i < rows.length - 1; i++) {
+          let shouldSwitch = false;
+          const x = rows[i].getElementsByTagName("TD")[n];
+          const y = rows[i + 1].getElementsByTagName("TD")[n];
+          if ((dir === "asc" && x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) ||
+              (dir === "desc" && x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase())) {
+            shouldSwitch = true;
+            break;
           }
         }
         if (shouldSwitch) {
