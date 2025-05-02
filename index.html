@@ -1,0 +1,123 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LTCCH Cases 2025</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    h1 { text-align: center; }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; cursor: pointer; }
+    tr:nth-child(even) { background-color: #f9f9f9; }
+  </style>
+</head>
+<body>
+  <h1>LTCCH Cases 2025</h1>
+  <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search in table..." />
+  <table id="casesTable">
+    <thead>
+      <tr>
+        <th onclick="sortTable(0)">Received Date</th>
+        <th onclick="sortTable(1)">Document Code</th>
+        <th onclick="sortTable(2)">LTCCH Ticket Number</th>
+        <th onclick="sortTable(3)">Subject</th>
+        <th onclick="sortTable(4)">Category</th>
+        <th onclick="sortTable(5)">Perpetrator</th>
+        <th onclick="sortTable(6)">Schools Division Office</th>
+        <th onclick="sortTable(7)">School Name</th>
+        <th onclick="sortTable(8)">Type of Issuance</th>
+        <th onclick="sortTable(9)">Date of Compliance</th>
+        <th onclick="sortTable(10)">Endorsed to LRED</th>
+        <th onclick="sortTable(11)">Remarks</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>01/07/2025</td>
+        <td>LTCCH24-12-0012</td>
+        <td>LTCCH24-12-0012</td>
+        <td>Request for Submission...</td>
+        <td>Sexual Abuse</td>
+        <td>Teaching Personnel</td>
+        <td>Rizal Province</td>
+        <td>Don Jose M. Ynares Memorial National HS</td>
+        <td>Memorandum</td>
+        <td>-</td>
+        <td>YES, JANUARY 13, 2025</td>
+        <td>Request for Follow Up</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <script>
+    function searchTable() {
+      const input = document.getElementById("searchInput");
+      const filter = input.value.toLowerCase();
+      const table = document.getElementById("casesTable");
+      const tr = table.getElementsByTagName("tr");
+
+      for (let i = 1; i < tr.length; i++) {
+        tr[i].style.display = "none";
+        const td = tr[i].getElementsByTagName("td");
+        for (let j = 0; j < td.length; j++) {
+          if (td[j]) {
+            const textValue = td[j].textContent || td[j].innerText;
+            if (textValue.toLowerCase().indexOf(filter) > -1) {
+              tr[i].style.display = "";
+              break;
+            }
+          }
+        }
+      }
+    }
+
+    function sortTable(n) {
+      const table = document.getElementById("casesTable");
+      let rows, switching, i, x, y, shouldSwitch, dir, switchCount = 0;
+      switching = true;
+      dir = "asc";
+      while (switching) {
+        switching = false;
+        rows = table.rows;
+        for (i = 1; i < (rows.length - 1); i++) {
+          shouldSwitch = false;
+          x = rows[i].getElementsByTagName("TD")[n];
+          y = rows[i + 1].getElementsByTagName("TD")[n];
+          if (dir === "asc") {
+            if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+              shouldSwitch = true;
+              break;
+            }
+          } else if (dir === "desc") {
+            if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+              shouldSwitch = true;
+              break;
+            }
+          }
+        }
+        if (shouldSwitch) {
+          rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+          switching = true;
+          switchCount++;
+        } else {
+          if (switchCount === 0 && dir === "asc") {
+            dir = "desc";
+            switching = true;
+          }
+        }
+      }
+    }
+  </script>
+</body>
+</html>
