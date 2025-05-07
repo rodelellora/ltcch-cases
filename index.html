@@ -145,6 +145,39 @@
         }
       }
     }
+// Save table to localStorage
+function saveToLocalStorage() {
+  const rows = Array.from(document.querySelectorAll("#casesTable tbody tr")).map(tr =>
+    Array.from(tr.querySelectorAll("td")).slice(0, 12).map(td => td.textContent)
+  );
+  localStorage.setItem("cases", JSON.stringify(rows));
+}
+
+// Load data on page load
+window.onload = function () {
+  const data = JSON.parse(localStorage.getItem("cases") || "[]");
+  const table = document.getElementById("casesTable").getElementsByTagName("tbody")[0];
+  data.forEach(entry => {
+    const row = table.insertRow();
+    entry.forEach(text => {
+      const cell = row.insertCell();
+      cell.textContent = text;
+    });
+    const deleteCell = row.insertCell();
+    deleteCell.innerHTML = '<span class="delete-btn" onclick="deleteRow(this)">Delete</span>';
+  });
+};
+
+// Update localStorage after add/delete
+document.getElementById("caseForm").addEventListener("submit", function (e) {
+  ...
+  saveToLocalStorage();
+});
+
+function deleteRow(btn) {
+  ...
+  saveToLocalStorage();
+}  
   </script>
 </body>
 </html>
