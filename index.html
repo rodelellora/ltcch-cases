@@ -21,7 +21,7 @@
 </head>
 <body>
 
-<h1>LTCCH Cases 2025</h1>
+<h1>LRP Cases 2025</h1>
 
 <h3>Add New Case</h3>
 <form id="caseForm">
@@ -41,17 +41,39 @@
   <label for="subject">Subject:</label>
   <input type="text" id="subject" placeholder="Subject" required />
 </div>
-  <div class="form-group"><input type="text" placeholder="Category" id="category" required /></div>
-  <div class="form-group"><input type="text" placeholder="Perpetrator" id="perpetrator" required /></div>
-  <div class="form-group"><input type="text" placeholder="Schools Division Office" id="sdo" required /></div>
-  <div class="form-group"><input type="text" placeholder="School Name" id="school" required /></div>
-  <div class="form-group"><input type="text" placeholder="Type of Issuance" id="issuance" required /></div>
-   <div class="form-group">
+  <div class="form-group">
+  <label for="category">Category:</label>
+  <input type="text" id="category" placeholder="Category" required />
+</div>
+  <div class="form-group">
+  <label for="perpetrator">Perpetrator:</label>
+  <input type="text" id="perpetrator" placeholder="Perpetrator" required />
+</div>
+  <div class="form-group">
+  <label for="sdo">Schools Division Office:</label>
+  <input type="text" id="sdo" placeholder="Schools Division Office" required />
+</div>
+  <div class="form-group">
+  <label for="school">School Name:</label>
+  <input type="text" id="school" placeholder="School Name" required />
+</div>
+  <div class="form-group">
+  <label for="issuance">Issuance:</label>
+  <input type="text" id="issuance" placeholder="Issuance" required />
+</div>
+  <div class="form-group">
   <label for="compliance">Date of Compliance:</label>
   <input type="date" id="compliance" required />
 </div>
-  <div class="form-group"><input type="text" placeholder="Endorsed to LRED" id="lred" /></div>
+  <div class="form-group">
+  <label for="lred">Endorsed to LRED:</label>
+  <input type="text" id="lred" placeholder="Endorsed to LRED" required />
+</div>
   <div class="form-group"><input type="text" placeholder="Remarks" id="remarks" /></div>
+  <div class="form-group">
+  <label for="remarks">Remarks:</label>
+  <input type="text" id="remarks" placeholder="Remarks" required />
+</div>
   <div class="form-group">
     <label for="pdfUpload">Attach PDF(s):</label>
     <input type="file" id="pdfUpload" accept="application/pdf" multiple />
